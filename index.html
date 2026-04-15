@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Retro Wrist | Timeless Indian Horology</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Instrument+Sans:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --vintage-paper: #f4f1ea;
+            --ink-black: #1a1a1a;
+            --brass: #b48a4d;
+            --deep-maroon: #5d1a1a;
+        }
+
+        body {
+            background-color: var(--vintage-paper);
+            color: var(--ink-black);
+            font-family: 'Instrument Sans', sans-serif;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3BaseFilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/baseFilter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+            background-blend-mode: overlay;
+            opacity: 0.98;
+        }
+
+        h1, h2, h3, .serif {
+            font-family: 'Playfair Display', serif;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: var(--vintage-paper); }
+        ::-webkit-scrollbar-thumb { background: #d1cdc1; border-radius: 4px; }
+
+        /* Polaroid Effect */
+        .watch-card {
+            background: white;
+            padding: 12px 12px 40px 12px;
+            box-shadow: 0 10px 30px -10px rgba(0,0,0,0.1);
+            transform: rotate(var(--rotation, 0deg));
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            border: 1px solid rgba(0,0,0,0.05);
+        }
+
+        @media (min-width: 768px) {
+            .watch-card:hover {
+                transform: rotate(0deg) translateY(-10px);
+                box-shadow: 0 20px 40px -15px rgba(0,0,0,0.15);
+                z-index: 10;
+            }
+        }
+
+        .watch-image-container {
+            aspect-ratio: 1/1;
+            background: #f9f9f9;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 4rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Text Underline Decoration */
+        .vintage-underline {
+            position: relative;
+            display: inline-block;
+        }
+        .vintage-underline::after {
+            content: "";
+            position: absolute;
+            left: 0;
+            bottom: 2px;
+            width: 100%;
+            height: 8px;
+            background: rgba(180, 138, 77, 0.2);
+            z-index: -1;
+            transform: skewX(-15deg);
+        }
+
+        /* Cart & Checkout Views */
+        #cart-drawer {
+            transition: transform 0.5s cubic-bezier(0.77, 0, 0.175, 1);
+        }
+
+        .cart-item {
+            border-bottom: 1px dashed #d1cdc1;
+        }
+
+        #checkout-view {
+            display: none;
+        }
+
+        /* Notification Toast */
+        #toast {
+            bottom: -100px;
+            transition: bottom 0.5s ease;
+        }
+
+        .indian-motif {
+            opacity: 0.05;
+            pointer-events: none;
+            position: absolute;
+        }
+
+        /* Nav Transition */
+        nav.scrolled {
+            background-color: rgba(244, 241, 234, 0.9);
+            backdrop-filter: blur(10px);
+            padding-top: 1rem;
+            padding-bottom: 1rem;
+            box-shadow: 0 2px 20px rgba(0,0,0,0.05);
+            border-bottom: 1px solid rgba(0,0,0,0.05);
+        }
+    </style>
+</head>
+<body class="overflow-x-hidden">
+
+    <!-- Decorative Elements (Indian Motifs) -->
+    <svg class="indian-motif top-20 -left-20 w-32 md:w-64 h-32 md:h-64" viewBox="0 0 100 100"><path d="M50 0C50 50 0 50 0 50C50 50 50 100 50 100C50 50 100 50 100 50C50 50 50 0 50 0Z" fill="currentColor"/></svg>
+    <svg class="indian-motif bottom-0 -right-20 w-48 md:w-96 h-48 md:h-96" viewBox="0 0 100 100"><circle cx="50" cy="50" r="40" stroke="currentColor" fill="none" stroke-width="0.5"/></svg>
+
+    <!-- Navigation -->
+    <nav id="main-nav" class="fixed top-0 w-full z-50 px-4 md:px-10 py-6 flex justify-between items-center transition-all duration-300">
+        <a href="#" class="text-xl md:text-2xl font-bold tracking-tighter serif uppercase border-b-2 border-black">Retro Wrist</a>
+        <div class="flex items-center gap-4 md:gap-8">
+            <button onclick="toggleCart()" class="relative group">
+                <span class="text-xs md:text-sm font-bold uppercase tracking-widest group-hover:text-brass transition-colors">Bag</span>
+                <span id="cart-count" class="ml-1 text-[10px] bg-black text-white px-1.5 py-0.5 rounded-full">0</span>
+            </button>
+            <button class="text-xs md:text-sm font-bold uppercase tracking-widest">Login</button>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <header class="min-h-screen flex flex-col justify-center items-center text-center px-6 pt-20">
+        <span class="text-[10px] md:text-xs uppercase tracking-[0.3em] text-brass font-bold mb-4">Established in Old Delhi • 2024</span>
+        <h1 class="text-5xl md:text-9xl mb-8 leading-[1.1] md:leading-none">
+            Legacy <span class="italic font-normal">on your</span> <br>
+            <span class="vintage-underline">Wrist.</span>
+        </h1>
+        <p class="max-w-xl text-stone-600 text-base md:text-lg mb-10 leading-relaxed italic">
+            "High-quality refurbished watches for the modern Indian student. Because your style shouldn't be defined by your bank balance."
+        </p>
+        <div class="flex flex-col sm:flex-row gap-4 md:gap-6 w-full sm:w-auto">
+            <a href="#collection" class="bg-black text-white px-8 py-4 uppercase text-[10px] font-bold tracking-widest hover:bg-brass transition-all transform hover:scale-105 text-center">View Drop #01</a>
+            <a href="#story" class="border border-black px-8 py-4 uppercase text-[10px] font-bold tracking-widest hover:bg-black hover:text-white transition-all text-center">The Craft</a>
+        </div>
+    </header>
+
+    <!-- Collection Section -->
+    <section id="collection" class="max-w-7xl mx-auto px-6 py-20 md:py-32">
+        <div class="flex flex-col lg:flex-row justify-between lg:items-end mb-16 md:mb-20 gap-8">
+            <div class="max-w-md">
+                <h2 class="text-3xl md:text-4xl serif mb-4 underline decoration-brass underline-offset-8">Curated Classics</h2>
+                <p class="text-xs md:text-sm text-stone-500 uppercase tracking-widest">Authenticated movements. Hand-serviced in India.</p>
+            </div>
+            <div class="flex flex-wrap gap-4 text-[10px] font-bold uppercase tracking-widest">
+                <button class="text-brass border-b border-brass pb-1">All Items</button>
+                <button class="text-stone-400 hover:text-black transition-colors">HMT</button>
+                <button class="text-stone-400 hover:text-black transition-colors">Vintage Seiko</button>
+                <button class="text-stone-400 hover:text-black transition-colors">Titan</button>
+            </div>
+        </div>
+
+        <div id="product-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-12 gap-y-16 md:gap-y-24">
+            <!-- Products injected by JS -->
+        </div>
+    </section>
+
+    <!-- Story Section -->
+    <section id="story" class="bg-stone-900 text-white py-20 md:py-32 px-6 relative overflow-hidden">
+        <div class="max-w-4xl mx-auto relative z-10">
+            <h2 class="text-4xl md:text-7xl serif mb-12 text-center italic">The Master's Touch</h2>
+            <div class="grid md:grid-cols-2 gap-12 md:gap-16 items-center">
+                <div class="space-y-8">
+                    <div class="border-l-2 border-brass pl-6">
+                        <h4 class="serif text-xl md:text-2xl mb-2 text-brass">Authentic Origins</h4>
+                        <p class="text-stone-400 text-xs md:text-sm leading-relaxed">We source directly from collectors and watchmakers across India. No aftermarket "fake" parts—only genuine horological history.</p>
+                    </div>
+                    <div class="border-l-2 border-brass pl-6">
+                        <h4 class="serif text-xl md:text-2xl mb-2 text-brass">The 21-Point Check</h4>
+                        <p class="text-stone-400 text-xs md:text-sm leading-relaxed">Each movement is dismantled, cleaned, oiled, and timed. We ensure your vintage piece runs as reliably as a modern fitness band.</p>
+                    </div>
+                </div>
+                <div class="aspect-[4/5] md:aspect-[3/4] bg-stone-800 rounded-sm border border-stone-700 flex items-center justify-center p-8 md:p-12 text-center italic text-stone-500 text-base md:text-xl border-dashed">
+                    [Photo of a master watchmaker at a workbench in Chandni Chowk]
+                </div>
+            </div>
+        </div>
+        <div class="absolute top-0 right-0 p-10 md:p-20 opacity-10 text-6xl md:text-[15rem] serif pointer-events-none">1970</div>
+    </section>
+
+    <!-- Side Drawer (Cart + Checkout) -->
+    <div id="cart-drawer" class="fixed top-0 right-0 h-full w-full sm:max-w-md bg-white z-[100] translate-x-full shadow-[-20px_0_60px_-15px_rgba(0,0,0,0.3)] flex flex-col">
+        
+        <!-- Cart View -->
+        <div id="bag-view" class="flex flex-col h-full">
+            <div class="p-6 md:p-8 border-b flex justify-between items-center">
+                <h3 class="text-2xl serif">Your Collection</h3>
+                <button onclick="toggleCart()" class="text-[10px] uppercase tracking-widest font-bold border px-3 py-1 hover:bg-black hover:text-white transition-all">Close</button>
+            </div>
+            <div id="cart-items" class="flex-1 overflow-y-auto p-6 md:p-8 space-y-8">
+                <!-- Cart items injected here -->
+            </div>
+            <div class="p-6 md:p-8 bg-stone-50 border-t">
+                <div class="flex justify-between items-end mb-6">
+                    <span class="text-[10px] uppercase tracking-widest text-stone-500">Subtotal</span>
+                    <span id="cart-total" class="text-2xl md:text-3xl font-bold">₹0</span>
+                </div>
+                <button id="checkout-btn" onclick="showCheckout()" class="w-full bg-black text-white py-4 md:py-5 uppercase text-[10px] font-bold tracking-[0.2em] hover:bg-brass transition-colors disabled:opacity-30 disabled:pointer-events-none">Complete Order</button>
+                <p class="text-[10px] text-center mt-4 text-stone-400 uppercase tracking-widest italic">Taxes calculated at checkout</p>
+            </div>
+        </div>
+
+        <!-- Checkout View -->
+        <div id="checkout-view" class="flex flex-col h-full bg-white">
+            <div class="p-6 md:p-8 border-b flex items-center gap-4">
+                <button onclick="showBag()" class="text-stone-400 hover:text-black">←</button>
+                <h3 class="text-2xl serif">Final Details</h3>
+            </div>
+            <div class="flex-1 overflow-y-auto p-6 md:p-8">
+                <form id="order-form" class="space-y-6">
+                    <div>
+                        <label class="block text-[10px] uppercase tracking-widest text-stone-500 mb-2">Full Name</label>
+                        <input type="text" required class="w-full border-b border-stone-200 py-2 outline-none focus:border-brass transition-colors text-sm" placeholder="Arjun Sharma">
+                    </div>
+                    <div>
+                        <label class="block text-[10px] uppercase tracking-widest text-stone-500 mb-2">University / Institution</label>
+                        <input type="text" required class="w-full border-b border-stone-200 py-2 outline-none focus:border-brass transition-colors text-sm" placeholder="IIT Delhi / DU / etc.">
+                    </div>
+                    <div>
+                        <label class="block text-[10px] uppercase tracking-widest text-stone-500 mb-2">Contact Number</label>
+                        <input type="tel" required class="w-full border-b border-stone-200 py-2 outline-none focus:border-brass transition-colors text-sm" placeholder="+91 98XXX XXXXX">
+                    </div>
+                    <div>
+                        <label class="block text-[10px] uppercase tracking-widest text-stone-500 mb-2">Shipping Address</label>
+                        <textarea required class="w-full border-b border-stone-200 py-2 outline-none focus:border-brass transition-colors text-sm resize-none" rows="3" placeholder="Hostel 4, Room 202..."></textarea>
+                    </div>
+                    
+                    <div class="pt-4">
+                        <p class="text-[10px] uppercase tracking-widest text-stone-500 mb-4">Payment Method</p>
+                        <div class="p-4 border border-brass bg-amber-50 rounded flex justify-between items-center">
+                            <span class="text-xs font-bold">UPI / Cash on Delivery</span>
+                            <span class="text-[10px] bg-brass text-white px-2 py-0.5 rounded">Preferred</span>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="p-6 md:p-8 bg-stone-50 border-t">
+                <button onclick="placeOrder()" class="w-full bg-brass text-white py-4 md:py-5 uppercase text-[10px] font-bold tracking-[0.2em] hover:bg-black transition-colors">Place Your Order</button>
+            </div>
+        </div>
+
+        <!-- Success View -->
+        <div id="success-view" class="hidden flex-col h-full items-center justify-center p-8 text-center">
+            <div class="w-20 h-20 bg-green-50 text-green-600 rounded-full flex items-center justify-center text-4xl mb-6">✓</div>
+            <h3 class="text-3xl serif mb-4">It's Official!</h3>
+            <p class="text-stone-500 text-sm leading-relaxed mb-8">We've received your request. One of our watchmakers will reach out via WhatsApp shortly to confirm your delivery.</p>
+            <button onclick="resetCart()" class="text-xs font-bold uppercase tracking-widest border-b border-black pb-1">Back to Shop</button>
+        </div>
+    </div>
+
+    <!-- Notification Toast -->
+    <div id="toast" class="fixed left-1/2 -translate-x-1/2 bg-black text-white px-8 py-4 text-[10px] font-bold uppercase tracking-widest z-[110] shadow-2xl flex items-center gap-4">
+        <span>Added to Bag</span>
+        <div class="w-4 h-px bg-white/30"></div>
+        <button onclick="toggleCart()" class="text-brass">View</button>
+    </div>
+
+    <!-- Footer -->
+    <footer class="py-20 px-6 border-t border-stone-200 text-center">
+        <div class="max-w-xl mx-auto">
+            <h3 class="text-3xl serif mb-6 italic">Retro Wrist</h3>
+            <p class="text-stone-500 text-xs md:text-sm mb-12">Building the future of Indian style by preserving the past. Based in New Delhi, shipping nationwide.</p>
+            <div class="flex justify-center gap-6 md:gap-8 mb-12">
+                <a href="#" class="text-[10px] uppercase font-bold tracking-widest hover:text-brass underline decoration-stone-200">Instagram</a>
+                <a href="#" class="text-[10px] uppercase font-bold tracking-widest hover:text-brass underline decoration-stone-200">Threads</a>
+                <a href="#" class="text-[10px] uppercase font-bold tracking-widest hover:text-brass underline decoration-stone-200">Email</a>
+            </div>
+            <p class="text-[10px] text-stone-400 uppercase tracking-widest">© 2024 Retro Wrist Co. Hand-crafted with pride.</p>
+        </div>
+    </footer>
+
+    <script>
+        const products = [
+            { id: 1, name: "HMT Janata 'Devenagari'", price: 2499, oldPrice: 6500, icon: "⌚", tag: "Iconic", rotation: "-2deg", desc: "The legendary hand-wound movement that defined India. Serviced with new tan leather." },
+            { id: 2, name: "Seiko 5 'Golden Sunburst'", price: 4200, oldPrice: 11000, icon: "🕒", tag: "Automatic", rotation: "1deg", desc: "A robust Japanese heart in a stunning gold-tone case. Perfect for festive occasions." },
+            { id: 3, name: "Titan Regalia '94 Edition", price: 1850, oldPrice: 4200, icon: "🕰️", tag: "Slimline", rotation: "-1.5deg", desc: "Ultra-thin profile. The first luxury watch for most Indian households in the 90s." },
+            { id: 4, name: "Ricoh 'Crystal Blue'", price: 3100, oldPrice: 8500, icon: "🧿", tag: "Rare", rotation: "3deg", desc: "Vibrant faceted crystal with a deep blue mechanical dial. A collector's dream." },
+            { id: 5, name: "HMT Pilot 'Stealth Black'", price: 2750, oldPrice: 7000, icon: "🛩️", tag: "Pilot", rotation: "-1deg", desc: "Legendary HMT 17-jewel movement with a striking black dial. Bold and rugged." },
+            { id: 6, name: "Citizen 'Leopard' 1972", price: 4800, oldPrice: 15000, icon: "🐆", tag: "Premium", rotation: "2deg", desc: "High-beat movement. A piece of fine Japanese watchmaking restored to glory." }
+        ];
+
+        let cart = [];
+
+        function renderProducts() {
+            const grid = document.getElementById('product-grid');
+            grid.innerHTML = products.map(p => `
+                <div class="watch-card group" style="--rotation: ${p.rotation}">
+                    <div class="watch-image-container mb-6">
+                        <span class="group-hover:scale-110 transition-transform duration-700 select-none">${p.icon}</span>
+                        <div class="absolute top-2 right-2 bg-black text-white text-[8px] px-2 py-0.5 font-bold uppercase tracking-tighter">
+                            ${p.tag}
+                        </div>
+                    </div>
+                    <div class="flex justify-between items-start mb-2">
+                        <h3 class="serif text-lg md:text-xl font-bold">${p.name}</h3>
+                        <div class="text-right">
+                            <span class="block font-bold text-sm md:text-base">₹${p.price}</span>
+                            <span class="block text-[10px] text-stone-400 line-through">₹${p.oldPrice}</span>
+                        </div>
+                    </div>
+                    <p class="text-[10px] md:text-xs text-stone-500 leading-relaxed italic mb-6">"${p.desc}"</p>
+                    <button onclick="addToCart(${p.id})" class="w-full border border-black py-2 text-[9px] font-bold uppercase tracking-widest hover:bg-black hover:text-white transition-all">
+                        Inquire & Add to Bag
+                    </button>
+                </div>
+            `).join('');
+        }
+
+        function addToCart(id) {
+            const product = products.find(p => p.id === id);
+            cart.push({...product, cartId: Date.now()});
+            updateCartUI();
+            showToast();
+        }
+
+        function removeFromCart(cartId) {
+            cart = cart.filter(item => item.cartId !== cartId);
+            updateCartUI();
+        }
+
+        function updateCartUI() {
+            const list = document.getElementById('cart-items');
+            const count = document.getElementById('cart-count');
+            const total = document.getElementById('cart-total');
+            const checkoutBtn = document.getElementById('checkout-btn');
+
+            count.innerText = cart.length;
+            checkoutBtn.disabled = cart.length === 0;
+            
+            if (cart.length === 0) {
+                list.innerHTML = `<div class="h-64 flex flex-col items-center justify-center text-stone-400 italic text-sm">
+                    <p>Your collection is currently empty.</p>
+                </div>`;
+                total.innerText = "₹0";
+            } else {
+                list.innerHTML = cart.map(item => `
+                    <div class="cart-item flex gap-4 pb-6">
+                        <div class="w-16 h-16 bg-stone-100 flex items-center justify-center text-2xl">${item.icon}</div>
+                        <div class="flex-1">
+                            <h4 class="serif text-base font-bold">${item.name}</h4>
+                            <p class="text-xs text-stone-500">₹${item.price}</p>
+                        </div>
+                        <button onclick="removeFromCart(${item.cartId})" class="text-stone-300 hover:text-red-800">×</button>
+                    </div>
+                `).join('');
+                
+                const sum = cart.reduce((a, b) => a + b.price, 0);
+                total.innerText = `₹${sum}`;
+            }
+        }
+
+        function toggleCart() {
+            const drawer = document.getElementById('cart-drawer');
+            drawer.classList.toggle('translate-x-full');
+            if (drawer.classList.contains('translate-x-full')) {
+                setTimeout(showBag, 500); // Reset to bag view when closed
+            }
+        }
+
+        function showCheckout() {
+            document.getElementById('bag-view').style.display = 'none';
+            document.getElementById('checkout-view').style.display = 'flex';
+        }
+
+        function showBag() {
+            document.getElementById('bag-view').style.display = 'flex';
+            document.getElementById('checkout-view').style.display = 'none';
+            document.getElementById('success-view').classList.add('hidden');
+            document.getElementById('success-view').classList.remove('flex');
+        }
+
+        function placeOrder() {
+            const form = document.getElementById('order-form');
+            if (!form.checkValidity()) {
+                form.reportValidity();
+                return;
+            }
+            
+            document.getElementById('checkout-view').style.display = 'none';
+            document.getElementById('success-view').classList.remove('hidden');
+            document.getElementById('success-view').classList.add('flex');
+        }
+
+        function resetCart() {
+            cart = [];
+            updateCartUI();
+            toggleCart();
+        }
+
+        function showToast() {
+            const toast = document.getElementById('toast');
+            toast.style.bottom = '40px';
+            setTimeout(() => {
+                toast.style.bottom = '-100px';
+            }, 3000);
+        }
+
+        // Initialize
+        window.onload = () => {
+            renderProducts();
+            
+            // Handle Navbar Background and Parallax
+            window.addEventListener('scroll', () => {
+                const nav = document.getElementById('main-nav');
+                if (window.scrollY > 50) {
+                    nav.classList.add('scrolled');
+                } else {
+                    nav.classList.remove('scrolled');
+                }
+
+                // Parallax for motifs
+                const motifs = document.querySelectorAll('.indian-motif');
+                motifs.forEach((m, index) => {
+                    const speed = (index + 1) * 0.1;
+                    m.style.transform = `translateY(${window.scrollY * speed}px)`;
+                });
+            });
+        };
+    </script>
+</body>
+</html>
